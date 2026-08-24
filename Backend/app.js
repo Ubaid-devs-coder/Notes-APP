@@ -13,7 +13,7 @@ const app = express();
 // =======================
 const allowedOrigins = [
   "http://localhost:5173",
-  "notes-app-kappa-drab.vercel.app",
+  "https://notes-app-kappa-drab.vercel.app",
 ];
 
 app.use(
