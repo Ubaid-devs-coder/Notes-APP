@@ -51,11 +51,11 @@ const registerUser = async (req, res) => {
 
     // Store JWT in HTTP-only Cookie
     res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
 
     // Send Response
     return res.status(201).json({
@@ -128,11 +128,11 @@ const registerUser = async (req, res) => {
 
     // Store token in HTTP-only Cookie
     res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 Days
-    });
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
 
     // Send Response
     return res.status(200).json({
@@ -331,7 +331,11 @@ const deleteAccount = async (req, res) => {
     await Note.deleteMany({ user: userId });
     await User.findByIdAndDelete(userId);
 
-    res.clearCookie("token");
+    res.clearCookie("token", {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+});
 
     return res.status(200).json({
       success: true,
@@ -349,7 +353,12 @@ const deleteAccount = async (req, res) => {
 
 // Logout User
 const logoutUser = (req, res) => {
-  res.clearCookie("token");
+  
+  res.clearCookie("token", {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+});
 
   return res.status(200).json({
     success: true,
