@@ -1,5 +1,3 @@
-
-
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -11,19 +9,50 @@ const errorHandler = require("./src/middleware/error.middleware");
 const app = express();
 
 // =======================
-// Middlewares
+// CORS Configuration
 // =======================
+const allowedOrigins = [
+  "http://localhost:5173",
+  "notes-app-kappa-drab.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: (origin, callback) => {
+      // Allow requests with no origin
+      // (Postman, server-to-server requests, etc.)
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   })
 );
 
-// Increased limit from default 100kb to 10mb for Base64 image uploads
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ limit: "10mb", extended: true }));
+// =======================
+// Body Parsers
+// =======================
 
+// Increased limit from default 100kb to 10mb
+// for Base64 image uploads
+app.use(express.json({ limit: "10mb" }));
+
+app.use(
+  express.urlencoded({
+    limit: "10mb",
+    extended: true,
+  })
+);
+
+// =======================
+// Cookie Parser
+// =======================
 app.use(cookieParser());
 
 // =======================
@@ -37,4 +66,7 @@ app.use("/api/notes", noteRoutes);
 // =======================
 app.use(errorHandler);
 
+// =======================
+// Export App
+// =======================
 module.exports = app;
