@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Base URL comes from .env — falls back to localhost if not set
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://notes-app-cpp8.onrender.com";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
