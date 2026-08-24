@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
       const data = await authService.getProfile();
       setUser(data.user);
     } catch (error) {
+      localStorage.removeItem("token"); // expired/invalid token — stop sending it
       setUser(null);
     } finally {
       setLoading(false);
@@ -27,16 +28,20 @@ export const AuthProvider = ({ children }) => {
     getProfile();
   }, []);
 
-  // Register a new user
+  // Register a new user. Stores the token client-side so it can be sent as
+  // an Authorization header — the cookie alone isn't reliable cross-site
+  // (see axios.js request interceptor for why).
   const register = async (formData) => {
     const data = await authService.register(formData);
+    if (data.token) localStorage.setItem("token", data.token);
     setUser(data.user);
     return data;
   };
 
-  // Login an existing user
+  // Login an existing user. Same token-storage reasoning as register().
   const login = async (formData) => {
     const data = await authService.login(formData);
+    if (data.token) localStorage.setItem("token", data.token);
     setUser(data.user);
     return data;
   };
@@ -57,12 +62,14 @@ export const AuthProvider = ({ children }) => {
   // Logout the current user
   const logout = async () => {
     await authService.logout();
+    localStorage.removeItem("token");
     setUser(null);
   };
 
   // Permanently delete the current user account
   const deleteAccount = async () => {
     const data = await authService.deleteAccount();
+    localStorage.removeItem("token");
     setUser(null);
     return data;
   };

@@ -57,10 +57,13 @@ const registerUser = async (req, res) => {
   maxAge: 7 * 24 * 60 * 60 * 1000,
 });
 
-    // Send Response
+    // Send Response — token is included in the body (in addition to the
+    // cookie) so the frontend can send it as an Authorization header,
+    // which works even when the cross-site cookie gets blocked by the browser.
     return res.status(201).json({
       success: true,
       message: "User registered successfully.",
+      token,
       user: {
         id: user._id,
         fullName: user.fullName,
@@ -134,10 +137,13 @@ const registerUser = async (req, res) => {
   maxAge: 7 * 24 * 60 * 60 * 1000,
 });
 
-    // Send Response
+    // Send Response — token is included in the body (in addition to the
+    // cookie) so the frontend can send it as an Authorization header,
+    // which works even when the cross-site cookie gets blocked by the browser.
     return res.status(200).json({
       success: true,
       message: "Login successful.",
+      token,
       user: {
         id: user._id,
         fullName: user.fullName,

@@ -11,6 +11,21 @@ const axiosInstance = axios.create({
   },
 });
 
+// Request interceptor — attaches the stored JWT as a Bearer header on every
+// request. This is what actually keeps the user logged in: the httpOnly
+// cookie is cross-site (frontend on vercel.app, backend on onrender.com) and
+// gets silently blocked by Safari/Firefox/many-Chrome-configs as a
+// third-party cookie, even though login/register still "succeed" (the
+// success response itself doesn't depend on the cookie being stored).
+// The Authorization header is not subject to that restriction at all.
+axiosInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // Response interceptor — handles common error cases in one place
 axiosInstance.interceptors.response.use(
   (response) => response,

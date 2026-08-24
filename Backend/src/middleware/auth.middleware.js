@@ -3,9 +3,20 @@ const User = require("../model/user.model");
 
 const authMiddleware = async (req, res, next) => {
   try {
-    // Get token from cookie
-    const token = req.cookies.token;
-    console.log("TOKEN:", token);
+    // Prefer the cookie (works for same-site / local dev), but fall back to
+    // an Authorization: Bearer <token> header. This matters because the
+    // frontend (vercel.app) and backend (onrender.com) are on different
+    // domains — many browsers (Safari, Firefox, and increasingly Chrome)
+    // block third-party cookies by default, so the cookie never actually
+    // gets stored even though login/register "succeed". The Bearer header
+    // is not subject to that restriction at all.
+    const cookieToken = req.cookies.token;
+    const authHeader = req.headers.authorization;
+    const headerToken = authHeader?.startsWith("Bearer ")
+      ? authHeader.split(" ")[1]
+      : null;
+
+    const token = cookieToken || headerToken;
 
     // Check if token exists
     if (!token) {
@@ -17,7 +28,6 @@ const authMiddleware = async (req, res, next) => {
 
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decoded);
 
     // Find user
     const user = await User.findById(decoded.id).select("-password");
