@@ -13,7 +13,7 @@ const app = express();
 // =======================
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://notes-app-chi-inky.vercel.app",
+  "https://notes-app-zeta-rose.vercel.app/",
 ];
 
 app.use(
