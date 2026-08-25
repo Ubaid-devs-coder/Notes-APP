@@ -11,10 +11,13 @@ const app = express();
 // =======================
 // CORS Configuration
 // =======================
+// FRONTEND_URL is read from an environment variable (set it in Render's
+// dashboard) instead of being hardcoded here — so when your Vercel URL
+// changes, you update one env var instead of editing code and redeploying.
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://notes-app-lake-seven-54.vercel.app",
-];
+  process.env.FRONTEND_URL, // e.g. https://notes-app-xxxx.vercel.app — set this in Render
+].filter(Boolean); // drops FRONTEND_URL from the list if it isn't set yet
 
 app.use(
   cors({
@@ -29,6 +32,7 @@ app.use(
         return callback(null, true);
       }
 
+      console.warn(`Blocked by CORS: ${origin}`); // helps debug this exact issue in Render logs
       return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
