@@ -2,43 +2,43 @@ import axiosInstance from "./axios.js";
 
 // Create a new note
 const createNote = async (noteData) => {
-  const response = await axiosInstance.post("/api/notes", noteData);
+  const response = await axiosInstance.post("/notes", noteData);
   return response.data;
 };
 
 // Get all active notes
 const getAllNotes = async () => {
-  const response = await axiosInstance.get("/api/notes");
+  const response = await axiosInstance.get("/notes");
   return response.data;
 };
 
 // Get a single note by ID
 const getSingleNote = async (id) => {
-  const response = await axiosInstance.get(`/api/notes/${id}`);
+  const response = await axiosInstance.get(`/notes/${id}`);
   return response.data;
 };
 
 // Update a note by ID
 const updateNote = async (id, noteData) => {
-  const response = await axiosInstance.put(`/api/notes/${id}`, noteData);
+  const response = await axiosInstance.put(`/notes/${id}`, noteData);
   return response.data;
 };
 
 // Soft delete a note (move to trash)
 const deleteNote = async (id) => {
-  const response = await axiosInstance.delete(`/api/notes/${id}`);
+  const response = await axiosInstance.delete(`/notes/${id}`);
   return response.data;
 };
 
 // Toggle pin on a note
 const pinNote = async (id) => {
-  const response = await axiosInstance.put(`/api/notes/${id}/pin`);
+  const response = await axiosInstance.put(`/notes/${id}/pin`);
   return response.data;
 };
 
 // Toggle archive on a note
 const archiveNote = async (id) => {
-  const response = await axiosInstance.put(`/api/notes/${id}/archive`);
+  const response = await axiosInstance.put(`/notes/${id}/archive`);
   return response.data;
 };
 
@@ -52,25 +52,25 @@ const searchNotes = async (query) => {
 
 // Get all archived notes
 const getArchivedNotes = async () => {
-  const response = await axiosInstance.get("/api/notes/archive");
+  const response = await axiosInstance.get("/notes/archive");
   return response.data;
 };
 
 // Get all pinned notes
 const getPinnedNotes = async () => {
-  const response = await axiosInstance.get("/api/notes/pinned");
+  const response = await axiosInstance.get("/notes/pinned");
   return response.data;
 };
 
 // Get all trashed notes
 const getTrashedNotes = async () => {
-  const response = await axiosInstance.get("/api/notes/trash");
+  const response = await axiosInstance.get("/notes/trash");
   return response.data;
 };
 
 // Restore a trashed note
 const restoreNote = async (id) => {
-  const response = await axiosInstance.put(`/api/notes/${id}/restore`);
+  const response = await axiosInstance.put(`/notes/${id}/restore`);
   return response.data;
 };
 
@@ -84,7 +84,7 @@ const deleteForever = async (id) => {
 
 // Get dashboard statistics
 const getDashboardStats = async () => {
-  const response = await axiosInstance.get("/api/notes/stats");
+  const response = await axiosInstance.get("/notes/stats");
   return response.data;
 };
 
