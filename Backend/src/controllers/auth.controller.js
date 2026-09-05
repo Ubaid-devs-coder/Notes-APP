@@ -225,7 +225,15 @@ const updateProfile = async (req, res) => {
       if (typeof avatar !== "string") {
         return res.status(400).json({
           success: false,
-          message: "Avatar must be a valid image URL.",
+          message: "Avatar must be a valid image string or URL.",
+        });
+      }
+
+      // Safeguard against uncompressed or malicious massive strings (> 2MB)
+      if (avatar.length > 2 * 1024 * 1024) {
+        return res.status(400).json({
+          success: false,
+          message: "Avatar size is too large. Maximum allowed size is 2MB.",
         });
       }
 

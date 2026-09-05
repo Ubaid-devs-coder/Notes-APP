@@ -1,23 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Moon, SunMedium, ShieldCheck, ArrowRight, Camera, Trash2, Loader2 } from "lucide-react";
+import { Moon, SunMedium, ShieldCheck, ArrowRight, Camera, Trash2, Loader2, Sparkles } from "lucide-react";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth.js";
 import ChangePasswordModal from "./ChangePasswordModal.jsx";
 import ConfirmModal from "../common/ConfirmModal.jsx";
+import { compressAndCropAvatar } from "../../utils/imageUtils.js";
 
 const languageOptions = [{ value: "en", label: "English" }];
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 2 MB recommended for Base64 strings
+const MAX_FILE_SIZE = 15 * 1024 * 1024; // Up to 15MB raw input photos supported (compressed on client)
 const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
-
-// Helper function to convert File to Base64 Data URL
-const convertFileToBase64 = (file) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-};
 
 const SettingsView = ({ onLogout, onDeleteAccount }) => {
   const { user, updateProfile, changePassword } = useAuth();
@@ -41,7 +32,8 @@ const SettingsView = ({ onLogout, onDeleteAccount }) => {
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   const [previewUrl, setPreviewUrl] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [compressedData, setCompressedData] = useState(null);
+  const [compressionStats, setCompressionStats] = useState(null);
 
   const currentTimezone = useMemo(() => {
     try {
@@ -71,15 +63,7 @@ const SettingsView = ({ onLogout, onDeleteAccount }) => {
     });
   }, [user, currentTimezone]);
 
-  useEffect(() => {
-    return () => {
-      if (previewUrl && previewUrl.startsWith("blob:")) {
-        URL.revokeObjectURL(previewUrl);
-      }
-    };
-  }, [previewUrl]);
-
-  const handleFileSelect = (e) => {
+  const handleFileSelect = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -89,44 +73,50 @@ const SettingsView = ({ onLogout, onDeleteAccount }) => {
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      toast.error("File size exceeds 2MB limit.");
+      toast.error("File size exceeds 15MB limit.");
       return;
     }
 
-    const objectUrl = URL.createObjectURL(file);
-    setSelectedFile(file);
-    setPreviewUrl(objectUrl);
+    const toastId = toast.loading("Optimizing photo...");
+    try {
+      // Instant client-side center-crop and canvas compression
+      const result = await compressAndCropAvatar(file, { maxSize: 384, quality: 0.85 });
+      setPreviewUrl(result.base64);
+      setCompressedData(result.base64);
+      setCompressionStats({
+        originalKB: result.originalSizeKB,
+        compressedKB: result.sizeKB,
+      });
+      toast.success(
+        `Optimized! Reduced from ${result.originalSizeKB > 1024 ? (result.originalSizeKB / 1024).toFixed(1) + "MB" : result.originalSizeKB + "KB"} to ~${result.sizeKB}KB`,
+        { id: toastId }
+      );
+    } catch (err) {
+      toast.error("Failed to process photo. Please try another.", { id: toastId });
+    }
   };
 
   const handleCancelPreview = () => {
-    if (previewUrl && previewUrl.startsWith("blob:")) {
-      URL.revokeObjectURL(previewUrl);
-    }
-    setSelectedFile(null);
     setPreviewUrl(null);
+    setCompressedData(null);
+    setCompressionStats(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   };
 
-  // Convert image file to Base64 string and send as `{ avatar: base64String }`
+  // Upload optimized lightweight Base64 string
   const handleSaveAvatar = async () => {
-    if (!selectedFile) return;
+    if (!compressedData) return;
 
     setUploadingAvatar(true);
     try {
-      const base64Avatar = await convertFileToBase64(selectedFile);
-
       await updateProfile({
-        avatar: base64Avatar,
+        avatar: compressedData,
       });
 
-      toast.success("Profile picture updated successfully");
-      setSelectedFile(null);
-      setPreviewUrl(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+      toast.success("Profile picture updated instantly!");
+      handleCancelPreview();
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to upload profile picture");
     } finally {
@@ -292,10 +282,17 @@ const SettingsView = ({ onLogout, onDeleteAccount }) => {
             </div>
 
             <p className="mt-4 text-sm font-semibold text-slate-900">Profile Picture</p>
-            <p className="mt-1 text-xs text-slate-500">JPG, PNG, or WEBP up to 10MB.</p>
+            <p className="mt-1 text-xs text-slate-500">JPG, PNG, or WEBP. Automatically optimized for ultra-fast load.</p>
+
+            {compressionStats && (
+              <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700 border border-emerald-200">
+                <Sparkles size={12} className="text-emerald-500" />
+                <span>Compressed to {compressionStats.compressedKB} KB</span>
+              </div>
+            )}
 
             <div className="mt-4 w-full space-y-2">
-              {selectedFile ? (
+              {compressedData ? (
                 <div className="flex gap-2">
                   <button
                     type="button"
@@ -306,7 +303,7 @@ const SettingsView = ({ onLogout, onDeleteAccount }) => {
                     {uploadingAvatar ? (
                       <>
                         <Loader2 size={14} className="animate-spin" />
-                        Uploading...
+                        Saving...
                       </>
                     ) : (
                       "Save Photo"

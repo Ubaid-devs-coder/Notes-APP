@@ -27,7 +27,7 @@ const updateProfile = async (formData) => {
 // Change password
 const changePassword = async (formData) => {
   const response = await axiosInstance.put(
-    "/api/auth/change-password",
+    "/auth/change-password",
     formData
   );
   return response.data;

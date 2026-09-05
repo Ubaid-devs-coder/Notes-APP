@@ -1,18 +1,24 @@
-import { useEffect, useState, useMemo } from "react";
-import { User, ShieldCheck, Settings, Pin, Archive, Trash2 } from "lucide-react";
+import { useEffect, useState, useMemo, useRef } from "react";
+import { User, ShieldCheck, Settings, Pin, Archive, Trash2, Camera, Loader2, Sparkles, Upload } from "lucide-react";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth.js";
 import useNotes from "../../hooks/useNotes.js";
 import StatCard from "./StatCard.jsx";
 import ChangePasswordModal from "./ChangePasswordModal.jsx";
+import { compressAndCropAvatar } from "../../utils/imageUtils.js";
+
+const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+const MAX_FILE_SIZE = 15 * 1024 * 1024;
 
 const ProfileView = ({ onLogout, onChangeView }) => {
   const { user, updateProfile, changePassword } = useAuth();
   const { stats } = useNotes();
+  const fileInputRef = useRef(null);
 
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState({ fullName: "", phone: "", bio: "" });
   const [saving, setSaving] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [changingPassword, setChangingPassword] = useState(false);
 
@@ -75,6 +81,49 @@ const ProfileView = ({ onLogout, onChangeView }) => {
     }
   };
 
+  const handleAvatarSelect = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      toast.error("Invalid file type. Please select a JPG, PNG, or WEBP image.");
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      toast.error("File size exceeds 15MB limit.");
+      return;
+    }
+
+    setUploadingAvatar(true);
+    const toastId = toast.loading("Optimizing and saving photo...");
+
+    try {
+      const result = await compressAndCropAvatar(file, { maxSize: 384, quality: 0.85 });
+      await updateProfile({ avatar: result.base64 });
+      toast.success("Profile photo updated instantly!", { id: toastId });
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to update profile photo", { id: toastId });
+    } finally {
+      setUploadingAvatar(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    setUploadingAvatar(true);
+    try {
+      await updateProfile({ avatar: "" });
+      toast.success("Profile photo removed");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to remove profile photo");
+    } finally {
+      setUploadingAvatar(false);
+    }
+  };
+
   const profileAvatar =
     user?.avatar ||
     `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
@@ -83,14 +132,33 @@ const ProfileView = ({ onLogout, onChangeView }) => {
 
   return (
     <div className="space-y-6">
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/jpg,image/png,image/webp"
+        onChange={handleAvatarSelect}
+        className="hidden"
+      />
+
       <section className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-5">
-            <img
-              src={profileAvatar}
-              alt="Profile avatar"
-              className="h-28 w-28 rounded-3xl border border-slate-200 object-cover"
-            />
+            <div className="relative group">
+              <img
+                src={profileAvatar}
+                alt="Profile avatar"
+                className="h-28 w-28 rounded-3xl border border-slate-200 object-cover shadow-sm"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploadingAvatar}
+                className="absolute -bottom-2 -right-2 flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
+                title="Change Photo"
+              >
+                {uploadingAvatar ? <Loader2 size={16} className="animate-spin" /> : <Camera size={16} />}
+              </button>
+            </div>
 
             <div>
               <p className="text-sm text-slate-500">👤 Profile</p>
@@ -270,29 +338,59 @@ const ProfileView = ({ onLogout, onChangeView }) => {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-sm font-semibold text-slate-900">Profile Picture</p>
-                <p className="text-sm text-slate-500 mt-1">Add a profile photo later with Cloudinary support.</p>
+                <p className="text-sm text-slate-500 mt-1">Upload a personalized avatar optimized for ultra-fast load.</p>
               </div>
             </div>
 
-            <div className="mt-6 space-y-5">
+            <div className="mt-6 space-y-4">
               <div className="flex items-center gap-4 rounded-3xl border border-slate-200 bg-slate-50 p-5">
                 <img
                   src={profileAvatar}
                   alt="Profile avatar"
-                  className="h-20 w-20 rounded-3xl border border-slate-200 object-cover"
+                  className="h-20 w-20 rounded-2xl border border-slate-200 object-cover shadow-sm"
                 />
-                <div>
-                  <p className="text-sm font-semibold text-slate-900">Current Avatar</p>
-                  <p className="text-sm text-slate-500 mt-1">This is a placeholder. Upload will be added in a future release.</p>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-slate-900">
+                    {user?.avatar ? "Custom Photo" : "Default Avatar"}
+                  </p>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Auto-compressed to ~30KB for lightning-fast sync.
+                  </p>
                 </div>
               </div>
 
-              <button
-                type="button"
-                className="w-full rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors duration-200"
-              >
-                Upload Picture (Coming Soon)
-              </button>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploadingAvatar}
+                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors duration-200 disabled:opacity-50"
+                >
+                  {uploadingAvatar ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Upload size={16} />
+                      Upload Photo
+                    </>
+                  )}
+                </button>
+
+                {user?.avatar && (
+                  <button
+                    type="button"
+                    onClick={handleRemoveAvatar}
+                    disabled={uploadingAvatar}
+                    className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors duration-200 disabled:opacity-50"
+                  >
+                    <Trash2 size={16} />
+                    Remove
+                  </button>
+                )}
+              </div>
             </div>
           </section>
 
