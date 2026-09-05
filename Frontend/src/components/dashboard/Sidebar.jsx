@@ -60,25 +60,25 @@ const Sidebar = ({ isOpen, onClose, onLogout, activeView, onChangeView }) => {
         ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
       >
         {/* Logo */}
-        <div className="flex items-center justify-between px-6 h-[72px] border-b border-slate-100">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center">
+        <div className="flex items-center justify-between px-6 h-[72px] border-b border-slate-100 dark:border-slate-800/80">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-md shadow-indigo-500/25">
               <NotebookPen size={18} className="text-white" />
             </div>
-            <span className="text-lg font-bold text-slate-900">NoteFlow</span>
+            <span className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">NoteFlow</span>
           </div>
 
           {/* Close button — mobile only */}
           <button
             onClick={onClose}
-            className="lg:hidden text-slate-400 hover:text-slate-700"
+            className="lg:hidden text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
           >
             <X size={22} />
           </button>
         </div>
 
         {/* Menu Items */}
-        <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
           {menuItems.map(({ label, path, icon: Icon }) => {
             const view = VIEW_ITEMS[label];
 
@@ -96,11 +96,11 @@ const Sidebar = ({ isOpen, onClose, onLogout, activeView, onChangeView }) => {
                   key={label}
                   type="button"
                   onClick={handleClick}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-left
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-left cursor-pointer
                   ${
                     isActive
-                      ? "bg-indigo-600 text-white shadow-md shadow-indigo-200"
-                      : "text-slate-600 hover:bg-slate-100"
+                      ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/25 font-semibold"
+                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 hover:text-slate-900 dark:hover:text-slate-200"
                   }`}
                 >
                   <Icon size={18} />
@@ -120,8 +120,8 @@ const Sidebar = ({ isOpen, onClose, onLogout, activeView, onChangeView }) => {
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300
                 ${
                   isActive
-                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-200"
-                    : "text-slate-600 hover:bg-slate-100"
+                    ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/25 font-semibold"
+                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/70 hover:text-slate-900 dark:hover:text-slate-200"
                 }`}
               >
                 <Icon size={18} />

@@ -56,29 +56,28 @@ const CreateNoteModal = ({ isOpen, onClose }) => {
       role="dialog"
       aria-modal="true"
       aria-labelledby="create-note-title"
-      className="fixed inset-0 z-9999 flex items-center justify-center p-4"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4"
     >
       {/* Backdrop — covers the entire application */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-black/40 backdrop-blur-md animate-fadeIn"
+        className="fixed inset-0 bg-black/50 backdrop-blur-md animate-fadeIn"
       />
 
-      {/* Modal Card — outer shell clips to the rounded corners, inner div handles scrolling
-          so the scrollbar never overlaps or breaks the rounded edge */}
-      <div className="relative z-10 w-full max-w-3xl max-h-[90vh] bg-white rounded-3xl shadow-2xl overflow-hidden animate-scaleIn">
-        <div className="modal-scrollbar max-h-[90vh] overflow-y-auto p-6 sm:p-8 lg:p-10">
+      {/* Modal Card — outer shell clips to the rounded corners, inner div handles scrolling */}
+      <div className="relative z-10 w-full max-w-3xl max-h-[92vh] sm:max-h-[90vh] bg-white rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden animate-scaleIn">
+        <div className="modal-scrollbar max-h-[92vh] sm:max-h-[90vh] overflow-y-auto p-4 sm:p-8 lg:p-10">
           {/* Header */}
-          <div className="flex items-start justify-between mb-8">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-indigo-100 flex items-center justify-center shrink-0">
-                <NotebookPen size={26} className="text-indigo-600" />
+          <div className="flex items-start justify-between mb-6 sm:mb-8">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-indigo-100 flex items-center justify-center shrink-0">
+                <NotebookPen size={22} className="sm:w-[26px] sm:h-[26px] text-indigo-600" />
               </div>
               <div>
-                <h2 id="create-note-title" className="text-2xl font-bold text-slate-900 leading-tight">
+                <h2 id="create-note-title" className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
                   Create Note
                 </h2>
-                <p className="text-sm text-slate-500 mt-1">
+                <p className="text-xs sm:text-sm text-slate-500 mt-0.5 sm:mt-1">
                   Add a new note to your collection
                 </p>
               </div>
@@ -87,9 +86,9 @@ const CreateNoteModal = ({ isOpen, onClose }) => {
             <button
               onClick={onClose}
               aria-label="Close modal"
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors duration-200 shrink-0"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors duration-200 shrink-0"
             >
-              <X size={22} />
+              <X size={20} className="sm:w-[22px] sm:h-[22px]" />
             </button>
           </div>
 

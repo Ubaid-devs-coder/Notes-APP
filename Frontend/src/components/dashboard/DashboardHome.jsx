@@ -52,8 +52,10 @@ const DashboardHome = ({
   return (
     <>
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Dashboard</h1>
-        <p className="text-slate-500 mt-1">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:via-slate-100 dark:to-indigo-200 tracking-tight">
+          Dashboard
+        </h1>
+        <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm sm:text-base">
           Welcome back! Here's what's happening today.
         </p>
       </div>
@@ -65,10 +67,10 @@ const DashboardHome = ({
       </div>
 
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-xl font-bold text-slate-900">Recent Notes</h2>
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white">Recent Notes</h2>
         <button
           onClick={() => onChangeView("all")}
-          className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition-colors duration-300"
+          className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-300"
         >
           View All
         </button>

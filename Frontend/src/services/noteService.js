@@ -45,7 +45,7 @@ const archiveNote = async (id) => {
 // Search notes by keyword
 const searchNotes = async (query) => {
   const response = await axiosInstance.get(
-    `/api/notes/search?q=${encodeURIComponent(query)}`
+    `/notes/search?q=${encodeURIComponent(query)}`
   );
   return response.data;
 };
@@ -77,7 +77,7 @@ const restoreNote = async (id) => {
 // Permanently delete a trashed note
 const deleteForever = async (id) => {
   const response = await axiosInstance.delete(
-    `/api/notes/${id}/permanent`
+    `/notes/${id}/permanent`
   );
   return response.data;
 };

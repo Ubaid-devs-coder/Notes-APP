@@ -177,12 +177,12 @@ const NoteForm = ({ onSubmit, onCancel, loading, initialData, submitLabel = "Sav
       </label>
 
       {/* Footer */}
-      <div className="flex items-center justify-end gap-3 pt-6 border-t border-slate-200 mt-1">
+      <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-6 border-t border-slate-200 dark:border-slate-800 mt-1">
         <button
           type="button"
           onClick={onCancel}
           disabled={loading}
-          className="h-12 px-7 rounded-xl text-sm font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-100 hover:border-slate-400 transition-colors duration-200 disabled:opacity-50"
+          className="w-full sm:w-auto h-11 sm:h-12 px-6 sm:px-7 rounded-xl text-sm font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-100 hover:border-slate-400 transition-colors duration-200 disabled:opacity-50 cursor-pointer"
         >
           Cancel
         </button>
@@ -190,10 +190,10 @@ const NoteForm = ({ onSubmit, onCancel, loading, initialData, submitLabel = "Sav
         <button
           type="submit"
           disabled={loading}
-          className="flex items-center gap-2 h-12 px-7 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-indigo-600 to-violet-600 shadow-lg shadow-indigo-200 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 h-11 sm:h-12 px-6 sm:px-7 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-violet-600 shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 cursor-pointer"
         >
           <Save size={16} />
-          {loading ? "Saving..." : submitLabel}
+          <span>{loading ? "Saving..." : submitLabel}</span>
         </button>
       </div>
     </form>

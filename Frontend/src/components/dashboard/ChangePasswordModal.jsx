@@ -37,25 +37,25 @@ const ChangePasswordModal = ({ isOpen, onClose, onSubmit, loading }) => {
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
       <div onClick={onClose} className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
 
-      <div className="relative z-10 w-full max-w-md bg-white rounded-[28px] shadow-[0_30px_80px_rgba(0,0,0,0.18)] overflow-hidden animate-scaleIn">
-        <div className="modal-scrollbar max-h-[90vh] overflow-y-auto p-6 sm:p-8">
+      <div className="relative z-10 w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-[28px] shadow-2xl overflow-hidden animate-scaleIn">
+        <div className="modal-scrollbar max-h-[90vh] overflow-y-auto p-4 sm:p-7">
           <div className="flex items-start justify-between gap-4 mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-3xl bg-indigo-100 flex items-center justify-center">
-                <Lock size={26} className="text-indigo-600" />
+              <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-2xl sm:rounded-3xl bg-indigo-100 dark:bg-indigo-950/80 flex items-center justify-center shrink-0">
+                <Lock size={22} className="text-indigo-600 dark:text-indigo-400" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-slate-900">Change Password</h2>
-                <p className="text-sm text-slate-500">Update your password securely.</p>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Change Password</h2>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Update your password securely.</p>
               </div>
             </div>
 
             <button
               type="button"
               onClick={onClose}
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors duration-200"
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-200 shrink-0"
             >
-              <X size={22} />
+              <X size={20} />
             </button>
           </div>
 

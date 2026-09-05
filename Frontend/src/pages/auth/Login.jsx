@@ -70,8 +70,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-slate-50 p-4 sm:p-6">
-      <div className="flex w-full max-w-4xl min-h-[600px] bg-white rounded-[28px] shadow-xl overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center bg-slate-50 p-3.5 sm:p-6">
+      <div className="flex w-full max-w-4xl bg-white rounded-2xl sm:rounded-[28px] shadow-xl overflow-hidden">
         {/* ================================================= */}
         {/* LEFT SIDE — NOTEBOOK IMAGE */}
         {/* ================================================= */}
@@ -117,9 +117,9 @@ const Login = () => {
         {/* ================================================= */}
         {/* RIGHT SIDE — LOGIN FORM */}
         {/* ================================================= */}
-        <div className="w-full md:w-3/5 p-6 sm:p-10 lg:p-12 flex flex-col justify-center">
+        <div className="w-full md:w-3/5 p-5 sm:p-10 lg:p-12 flex flex-col justify-center">
           {/* Logo */}
-          <div className="flex items-center gap-2 mb-8">
+          <div className="flex items-center gap-2 mb-6 sm:mb-8">
             <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm">
               <NotebookPen size={18} className="text-white" />
             </div>

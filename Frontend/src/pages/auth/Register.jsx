@@ -80,12 +80,12 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-slate-50 p-4 sm:p-6">
+    <div className="min-h-screen w-full flex items-center justify-center bg-slate-50 p-3.5 sm:p-6">
 
       {/* =====================================================
           MAIN CARD
       ====================================================== */}
-      <div className="flex w-full max-w-4xl bg-white rounded-[28px] shadow-xl overflow-hidden">
+      <div className="flex w-full max-w-4xl bg-white rounded-2xl sm:rounded-[28px] shadow-xl overflow-hidden">
 
         {/* =====================================================
             LEFT SIDE — NOTEBOOK IMAGE
@@ -139,7 +139,7 @@ const Register = () => {
         {/* =====================================================
             RIGHT SIDE — REGISTER
         ====================================================== */}
-        <div className="w-full md:w-3/5 p-6 sm:p-8 lg:p-10 flex flex-col">
+        <div className="w-full md:w-3/5 p-5 sm:p-8 lg:p-10 flex flex-col">
 
           {/* =====================================================
               NOTE FLOW LOGO

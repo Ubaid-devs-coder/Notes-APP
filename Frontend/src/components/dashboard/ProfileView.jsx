@@ -142,18 +142,18 @@ const ProfileView = ({ onLogout, onChangeView }) => {
 
       <section className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-5">
-            <div className="relative group">
+          <div className="flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-5">
+            <div className="relative group shrink-0">
               <img
                 src={profileAvatar}
                 alt="Profile avatar"
-                className="h-28 w-28 rounded-3xl border border-slate-200 object-cover shadow-sm"
+                className="h-24 w-24 sm:h-28 sm:w-28 rounded-3xl border border-slate-200 object-cover shadow-sm"
               />
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploadingAvatar}
-                className="absolute -bottom-2 -right-2 flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
+                className="absolute -bottom-2 -right-2 flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 cursor-pointer"
                 title="Change Photo"
               >
                 {uploadingAvatar ? <Loader2 size={16} className="animate-spin" /> : <Camera size={16} />}
@@ -162,13 +162,13 @@ const ProfileView = ({ onLogout, onChangeView }) => {
 
             <div>
               <p className="text-sm text-slate-500">👤 Profile</p>
-              <h1 className="mt-2 text-3xl font-bold text-slate-900">{user?.fullName || "Your Name"}</h1>
-              <p className="mt-2 text-sm text-slate-500 max-w-xl">{user?.bio || "Your profile summary will appear here once you add a bio."}</p>
-              <p className="mt-4 text-sm font-medium text-slate-600">Joined {joinedDate}</p>
+              <h1 className="mt-1 sm:mt-2 text-2xl sm:text-3xl font-bold text-slate-900">{user?.fullName || "Your Name"}</h1>
+              <p className="mt-1.5 sm:mt-2 text-sm text-slate-500 max-w-xl">{user?.bio || "Your profile summary will appear here once you add a bio."}</p>
+              <p className="mt-3 sm:mt-4 text-xs sm:text-sm font-medium text-slate-600">Joined {joinedDate}</p>
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="flex flex-col gap-2.5 sm:gap-3 sm:flex-row w-full sm:w-auto">
             <button
               type="button"
               onClick={() => setEditMode(true)}

@@ -28,11 +28,15 @@ app.use(
         return callback(null, true);
       }
 
-      if (allowedOrigins.includes(origin)) {
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app") ||
+        origin.includes("localhost")
+      ) {
         return callback(null, true);
       }
 
-      console.warn(`Blocked by CORS: ${origin}`); // helps debug this exact issue in Render logs
+      console.warn(`Blocked by CORS: ${origin}`); // helps debug this exact issue in logs
       return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
@@ -60,10 +64,12 @@ app.use(
 app.use(cookieParser());
 
 // =======================
-// Routes
+// Routes (Mounted for both standalone Express & Vercel Serverless)
 // =======================
 app.use("/api/auth", authRoutes);
 app.use("/api/notes", noteRoutes);
+app.use("/auth", authRoutes);
+app.use("/notes", noteRoutes);
 
 // =======================
 // Error Handler

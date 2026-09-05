@@ -87,41 +87,38 @@ const NotesView = ({
           ================================================== */}
 
           {isPaginated && totalPages > 1 && (
-            <div className="mt-auto pt-8 pb-2 flex items-center justify-center gap-4 shrink-0">
+            <div className="mt-auto pt-8 pb-2 flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 shrink-0">
               {/* Previous */}
-
               <button
                 type="button"
                 onClick={onPreviousPage}
                 disabled={currentPage === 1}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all duration-200 disabled:opacity-40 disabled:hover:bg-white disabled:hover:border-slate-200 disabled:hover:text-slate-700 disabled:cursor-not-allowed"
+                className="flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all duration-200 disabled:opacity-40 disabled:hover:bg-white disabled:hover:border-slate-200 disabled:hover:text-slate-700 disabled:cursor-not-allowed cursor-pointer"
               >
                 <ChevronLeft size={16} />
-                Previous
+                <span>Previous</span>
               </button>
 
               {/* Current Page */}
-
-              <span className="text-sm font-medium text-slate-500">
+              <span className="text-xs sm:text-sm font-medium text-slate-500">
                 Page{" "}
-                <span className="text-slate-900 font-semibold">
+                <span className="text-slate-900 dark:text-white font-semibold">
                   {currentPage}
                 </span>{" "}
                 of{" "}
-                <span className="text-slate-900 font-semibold">
+                <span className="text-slate-900 dark:text-white font-semibold">
                   {totalPages}
                 </span>
               </span>
 
               {/* Next */}
-
               <button
                 type="button"
                 onClick={onNextPage}
                 disabled={currentPage === totalPages}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all duration-200 disabled:opacity-40 disabled:hover:bg-white disabled:hover:border-slate-200 disabled:hover:text-slate-700 disabled:cursor-not-allowed"
+                className="flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600 transition-all duration-200 disabled:opacity-40 disabled:hover:bg-white disabled:hover:border-slate-200 disabled:hover:text-slate-700 disabled:cursor-not-allowed cursor-pointer"
               >
-                Next
+                <span>Next</span>
                 <ChevronRight size={16} />
               </button>
             </div>

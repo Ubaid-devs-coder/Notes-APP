@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// Base URL comes from .env — falls back to localhost if not set
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://notes-app-fbrg.onrender.com/api";
+// Base URL comes from .env — defaults to /api (same-origin) in production or localhost in dev
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,

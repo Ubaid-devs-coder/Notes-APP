@@ -327,7 +327,7 @@ const Dashboard = () => {
         onChangeView={changeView}
       />
 
-      <div className="lg:pl-65">
+      <div className="lg:pl-[260px]">
         <TopNavbar
           onMenuClick={() => setSidebarOpen(true)}
           onLogout={handleLogout}
@@ -337,7 +337,7 @@ const Dashboard = () => {
           onSearchChange={setSearchQuery}
         />
 
-        <main className="p-4 sm:p-6 lg:p-8 pb-20">
+        <main className="p-3.5 sm:p-6 lg:p-8 pb-28 lg:pb-12 max-w-7xl mx-auto">
           {activeView === "recent" ? (
             <DashboardHome
               stats={stats}

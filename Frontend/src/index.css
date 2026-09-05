@@ -54,43 +54,70 @@
    Provides seamless, elegant dark mode across all views, cards, modals & forms
    ========================================================================== */
 
+html {
+  transition-property: background-color, color;
+  transition-duration: 200ms;
+}
+
 html.dark {
   color-scheme: dark;
 }
 
 html.dark body {
-  background-color: #0b1120;
+  background-color: #0b101d;
+  background-image:
+    radial-gradient(at 5% 5%, rgba(99, 102, 241, 0.09) 0px, transparent 45%),
+    radial-gradient(at 95% 10%, rgba(139, 92, 246, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 90%, rgba(59, 130, 246, 0.06) 0px, transparent 50%);
+  background-attachment: fixed;
   color: #f1f5f9;
 }
 
 /* Dashboard main container */
 html.dark .bg-\[\#F8FAFC\],
 html.dark .bg-slate-50 {
-  background-color: #0b1120 !important;
+  background-color: transparent !important;
 }
 
 /* Surfaces, Cards, Headers, Drawers */
-html.dark header,
-html.dark aside,
+html.dark header {
+  background-color: rgba(13, 19, 34, 0.85) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  color: #f8fafc;
+}
+
+html.dark aside {
+  background-color: rgba(13, 19, 34, 0.95) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  color: #f8fafc;
+}
+
 html.dark .bg-white {
-  background-color: #131c31 !important;
+  background-color: #121a2d !important;
   color: #f8fafc;
 }
 
 /* Secondary surface / slate-100 backgrounds */
 html.dark .bg-slate-100 {
-  background-color: #1c2742 !important;
+  background-color: #19243d !important;
   color: #f1f5f9;
 }
 
 /* Borders */
 html.dark .border-slate-200,
 html.dark .border-slate-100 {
-  border-color: #223150 !important;
+  border-color: #1e2c48 !important;
 }
 
 html.dark .border-slate-300 {
-  border-color: #2c3e64 !important;
+  border-color: #283a5e !important;
+}
+
+/* Interactive Card Glows in Dark Mode */
+html.dark .hover\:-translate-y-1:hover {
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.65), 0 0 24px -4px rgba(99, 102, 241, 0.15) !important;
 }
 
 /* Typography */

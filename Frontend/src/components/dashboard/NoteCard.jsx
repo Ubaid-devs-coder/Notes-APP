@@ -45,9 +45,10 @@ const NoteCard = ({
         relative
         rounded-2xl
         p-5
-        border border-slate-100
+        border border-slate-200/80 dark:border-white/10
+        backdrop-blur-md
         shadow-sm
-        hover:shadow-lg
+        hover:shadow-xl hover:shadow-indigo-500/10 dark:hover:shadow-indigo-500/15
         hover:-translate-y-1
         transition-all duration-300
         cursor-pointer
@@ -58,7 +59,7 @@ const NoteCard = ({
       {/* TOP ROW */}
       <div className="flex items-start justify-between mb-3">
         {/* Category */}
-        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-white/70 text-slate-700">
+        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-white/80 dark:bg-white/10 text-slate-700 dark:text-slate-200 border border-transparent dark:border-white/10 backdrop-blur-sm">
           {category || "General"}
         </span>
 
@@ -309,17 +310,17 @@ const NoteCard = ({
       </div>
 
       {/* TITLE */}
-      <h3 className="text-base font-bold text-slate-900 mb-1.5 truncate">
+      <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1.5 truncate">
         {title || "Untitled Note"}
       </h3>
 
       {/* CONTENT */}
-      <p className="text-sm text-slate-600 line-clamp-3 mb-4">
+      <p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-3 mb-4">
         {content}
       </p>
 
       {/* UPDATED TIME */}
-      <p className="text-xs text-slate-500">
+      <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
         {formatRelativeDate(updatedAt)}
       </p>
     </div>
