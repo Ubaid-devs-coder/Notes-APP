@@ -11,7 +11,7 @@ A modern, fast, and elegant full-stack note-taking platform built with **React 1
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![License](https://img.shields.io/badge/License-ISC-blue.svg?style=flat-square)](#license)
 
-[Live Demo](https://notes-app-nine-phi-86.vercel.app) • [Vercel Deployment Guide](VERCEL_DEPLOYMENT.md) • [Report Issue](https://github.com/Ubaid-devs-coder/Notes-APP/issues)
+[Live Demo](https://notes-app-nine-phi-86.vercel.app) • [Deployment Guide](#️-deployment) • [Report Issue](https://github.com/Ubaid-devs-coder/Notes-APP/issues)
 
 </div>
 
@@ -104,7 +104,6 @@ Notes-APP/
 │   └── vite.config.js        # Vite build configuration
 ├── package.json              # Root monorepo build script & dependencies
 ├── vercel.json               # Vercel monorepo routing & build configuration
-├── VERCEL_DEPLOYMENT.md      # Step-by-step Vercel deployment guide
 └── README.md                 # Project documentation
 ```
 
@@ -205,15 +204,24 @@ npm run dev
 ## ☁️ Deployment
 
 ### 1-Click Unified Vercel Deployment (Recommended)
-This repository is configured to deploy both the frontend and backend serverless functions under a single project on Vercel.
+This repository is pre-configured to deploy both the frontend and backend serverless function under a single project on Vercel with zero CORS configuration needed.
 
-See the complete walkthrough in **[VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md)**.
+#### Step 1: Import in Vercel
+1. Go to [vercel.com](https://vercel.com/) and sign in with GitHub.
+2. Click **Add New...** → **Project** and import **`Notes-APP`**.
+3. Keep **Root Directory** as **`./`** (do not select `Frontend` or `Backend`).
+4. Framework preset: **Other** (Vercel automatically uses `vercel.json`).
 
-**Summary Steps**:
-1. Push repository to GitHub.
-2. Import project in [Vercel](https://vercel.com/) with **Root Directory** as `./`.
-3. Add Environment Variables: `MONGO_URI` and `JWT_SECRET`.
-4. Click **Deploy**.
+#### Step 2: Environment Variables
+Add the following two environment variables in Vercel:
+
+| Key | Value | Description |
+| :--- | :--- | :--- |
+| `MONGO_URI` | `mongodb+srv://yt:5hc7_J7TTiS3V9s@yt-complete-backend.0j1mfw2.mongodb.net/notes` | MongoDB Atlas URI |
+| `JWT_SECRET` | `0b9a9f70941159d604c165bc0220d8af09694a47510f94aac793d4b9c6be72e39b8ba9cd9701de4aa9f53fa13c41fd8796e7f58dee6cde9717d8c7070885fa92` | JWT Secret Key |
+
+#### Step 3: Click Deploy
+Click **Deploy**. Vercel will install dependencies, compile the React Vite bundle, mount the serverless API at `/api/*`, and provide you with your live URL!
 
 ---
 
