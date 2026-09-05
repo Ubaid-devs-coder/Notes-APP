@@ -1,11 +1,13 @@
-import { Search, Bell, Menu, ChevronDown, Plus, X } from "lucide-react";
+import { Search, Bell, Menu, ChevronDown, Plus, X, Sun, Moon } from "lucide-react";
 import useAuth from "../../hooks/useAuth.js";
 import useDropdown from "../../hooks/useDropdown.js";
+import useTheme from "../../hooks/useTheme.js";
 
 // searchQuery / onSearchChange are optional — the input still renders fine
 // (just non-functional) if a page doesn't pass them.
 const TopNavbar = ({ onMenuClick, onLogout, onChangeView, onCreateNote, searchQuery = "", onSearchChange }) => {
   const { user } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
   const { ref, isOpen: dropdownOpen, toggle, close } = useDropdown("profile-dropdown");
 
   // Fallback avatar generated from the real user's name, in case they haven't uploaded one
@@ -52,8 +54,8 @@ const TopNavbar = ({ onMenuClick, onLogout, onChangeView, onCreateNote, searchQu
         </div>
       </div>
 
-      {/* Right — Create note, notifications + Avatar */}
-      <div className="flex items-center gap-4 ml-4">
+      {/* Right — Create note, Appearance, notifications + Avatar */}
+      <div className="flex items-center gap-2 sm:gap-3 ml-4">
         <button
           type="button"
           onClick={onCreateNote}
@@ -63,9 +65,24 @@ const TopNavbar = ({ onMenuClick, onLogout, onChangeView, onCreateNote, searchQu
           <span className="hidden sm:inline">Create Note</span>
         </button>
 
-        <button className="relative text-slate-500 hover:text-slate-800 transition-colors duration-300">
+        {/* Appearance (Theme Toggle Button) */}
+        <button
+          type="button"
+          onClick={toggleTheme}
+          aria-label={isDark ? "Switch to Light Theme" : "Switch to Dark Theme"}
+          title={`Appearance: ${isDark ? "Dark Theme (click for Light)" : "Light Theme (click for Dark)"}`}
+          className="p-2 sm:p-2.5 rounded-2xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200 active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          {isDark ? (
+            <Sun size={20} className="text-amber-400 transition-transform duration-300 hover:rotate-45" />
+          ) : (
+            <Moon size={20} className="text-slate-600 transition-transform duration-300 hover:-rotate-12" />
+          )}
+        </button>
+
+        <button className="relative p-2 text-slate-500 hover:text-slate-800 transition-colors duration-300">
           <Bell size={22} />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white" />
+          <span className="absolute 1 top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white" />
         </button>
 
         <div className="relative" ref={ref}>
@@ -87,7 +104,7 @@ const TopNavbar = ({ onMenuClick, onLogout, onChangeView, onCreateNote, searchQu
           </button>
 
           {dropdownOpen && (
-            <div className="absolute right-0 mt-3 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-30">
+            <div className="absolute right-0 mt-3 w-52 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-30">
               <p className="px-4 py-2 text-sm font-semibold text-slate-900 border-b border-slate-100 truncate">
                 {user?.fullName || "Loading..."}
               </p>
@@ -113,6 +130,25 @@ const TopNavbar = ({ onMenuClick, onLogout, onChangeView, onCreateNote, searchQu
               >
                 Settings
               </button>
+
+              {/* Appearance Toggle Item */}
+              <button
+                type="button"
+                onClick={() => {
+                  toggleTheme();
+                }}
+                className="flex items-center justify-between w-full px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors"
+              >
+                <span className="flex items-center gap-2">
+                  {isDark ? <Sun size={16} className="text-amber-400" /> : <Moon size={16} className="text-indigo-600" />}
+                  Appearance
+                </span>
+                <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                  {isDark ? "Dark" : "Light"}
+                </span>
+              </button>
+
+              <div className="my-1 border-t border-slate-100" />
 
               <button
                 onClick={() => {

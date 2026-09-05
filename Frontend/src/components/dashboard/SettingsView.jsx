@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Moon, SunMedium, ShieldCheck, ArrowRight, Camera, Trash2, Loader2, Sparkles } from "lucide-react";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth.js";
+import useTheme from "../../hooks/useTheme.js";
 import ChangePasswordModal from "./ChangePasswordModal.jsx";
 import ConfirmModal from "../common/ConfirmModal.jsx";
 import { compressAndCropAvatar } from "../../utils/imageUtils.js";
@@ -12,6 +13,7 @@ const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
 const SettingsView = ({ onLogout, onDeleteAccount }) => {
   const { user, updateProfile, changePassword } = useAuth();
+  const { isDark, setTheme } = useTheme();
   const fileInputRef = useRef(null);
 
   const [form, setForm] = useState({
@@ -353,8 +355,11 @@ const SettingsView = ({ onLogout, onDeleteAccount }) => {
         <div className="grid gap-4 sm:grid-cols-2">
           <button
             type="button"
-            onClick={() => setForm((prev) => ({ ...prev, darkMode: false }))}
-            className={`rounded-3xl border p-5 text-left transition-all duration-200 ${!form.darkMode ? "border-indigo-500 bg-indigo-50 text-slate-900" : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"}`}
+            onClick={() => {
+              setForm((prev) => ({ ...prev, darkMode: false }));
+              setTheme("light");
+            }}
+            className={`rounded-3xl border p-5 text-left transition-all duration-200 ${!isDark ? "border-indigo-500 bg-indigo-50 text-slate-900" : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"}`}
           >
             <div className="flex items-center gap-3 mb-3">
               <SunMedium size={18} className="text-indigo-600" />
@@ -363,13 +368,16 @@ const SettingsView = ({ onLogout, onDeleteAccount }) => {
                 <p className="text-sm text-slate-500">Bright app layout with a clean background.</p>
               </div>
             </div>
-            {!form.darkMode && <span className="inline-flex items-center gap-2 text-xs font-semibold text-indigo-700">Active</span>}
+            {!isDark && <span className="inline-flex items-center gap-2 text-xs font-semibold text-indigo-700">Active</span>}
           </button>
 
           <button
             type="button"
-            onClick={() => setForm((prev) => ({ ...prev, darkMode: true }))}
-            className={`rounded-3xl border p-5 text-left transition-all duration-200 ${form.darkMode ? "border-indigo-500 bg-indigo-50 text-slate-900" : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"}`}
+            onClick={() => {
+              setForm((prev) => ({ ...prev, darkMode: true }));
+              setTheme("dark");
+            }}
+            className={`rounded-3xl border p-5 text-left transition-all duration-200 ${isDark ? "border-indigo-500 bg-indigo-50 text-slate-900" : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"}`}
           >
             <div className="flex items-center gap-3 mb-3">
               <Moon size={18} className="text-indigo-600" />
@@ -378,7 +386,7 @@ const SettingsView = ({ onLogout, onDeleteAccount }) => {
                 <p className="text-sm text-slate-500">Soft contrast for low-light environments.</p>
               </div>
             </div>
-            {form.darkMode && <span className="inline-flex items-center gap-2 text-xs font-semibold text-indigo-700">Active</span>}
+            {isDark && <span className="inline-flex items-center gap-2 text-xs font-semibold text-indigo-700">Active</span>}
           </button>
         </div>
       </section>
