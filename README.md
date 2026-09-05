@@ -307,14 +307,6 @@ JWT_SECRET=your_production_jwt_secret
 
 ---
 
-## 🌐 Live Demo
-
-**Try NoteFlow online:**
-
-👉 https://notes-app-nine-phi-86.vercel.app
-
----
-
 ## 🧪 Development Checklist
 
 Before pushing changes:
